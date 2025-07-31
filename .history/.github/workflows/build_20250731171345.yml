@@ -1,0 +1,59 @@
+name: Build Desktop Apps
+
+on:
+  push:
+    tags:
+      - "v*" # 예: v1.0, v1.1 등의 태그를 push할 때 실행됨
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pyinstaller
+
+      - name: Build Windows EXE
+        run: |
+          pyinstaller --onefile --add-data "playauto_settings_v4.json;." main_optimized.py
+
+      - name: Upload release asset
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist/main_optimized.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pyinstaller
+
+      - name: Build macOS binary
+        run: |
+          pyinstaller --onefile --add-data "playauto_settings_v4.json:." main_optimized.py
+
+      - name: Upload release asset
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist/main_optimized
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
