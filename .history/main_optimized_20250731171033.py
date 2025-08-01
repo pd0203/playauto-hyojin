@@ -2020,8 +2020,4 @@ def main():
         messagebox.showerror("Fatal Error", f"Application error:\n{str(e)}")
 
 if __name__ == "__main__":
-    success = main()
-    if not success:
-        sys.exit(1)
-    elif not getattr(sys, 'frozen', False):  # 빌드된 실행파일이 아닐 경우만 input 실행
-        input("\n엔터를 눌러 종료...")
+    main()
