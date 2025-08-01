@@ -5,6 +5,9 @@ on:
     tags:
       - "v*" # 예: v1.0, v1.1 등의 태그를 push할 때 실행됨
 
+permissions:
+  contents: write
+
 jobs:
   build-windows:
     runs-on: windows-latest
